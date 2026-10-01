@@ -1,0 +1,32 @@
+# spring.application.name=spring-security
+
+spring:
+    application:
+        name: EquipSync-API
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                "[format_sql]": true
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+auth:
+    token:
+        jwtSecret: 3578908347695627
+        expirationInMils: 3600000
+
+server:
+    port: 3000
+
+api.prefix: '/api/v1'
+
+# api:
+#     prefix: '/api/v1'
