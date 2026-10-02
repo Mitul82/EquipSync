@@ -1,8 +1,5 @@
 package com.backend.backend.services.AuthService;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +32,7 @@ public class AuthService implements IAuthService {
 
         UserDTO dto = mapper.map(user, UserDTO.class);
 
-        dto.setRole(user.getRoles().stream().map(role -> role.getRole().name()).collect(Collectors.toSet()));
+        dto.setRole(user.getRoles().getRole().name());
 
         return dto;
     }
@@ -48,13 +45,13 @@ public class AuthService implements IAuthService {
         user.setEmail(email);
         user.setPassword(encoder.encode(password));
         user.setDepartment(department);
-        user.setRoles(Set.of(employeeRole));
+        user.setRoles(employeeRole);
 
         UserModel savedUser = repo.save(user);
 
         UserDTO dto = mapper.map(savedUser, UserDTO.class);
 
-        dto.setRole(user.getRoles().stream().map(role -> role.getRole().name()).collect(Collectors.toSet()));
+        dto.setRole(user.getRoles().getRole().name());
 
         return dto;
     }

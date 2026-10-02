@@ -33,7 +33,7 @@ public class AuthControllers {
     private final JwtService jwtService;
     private final IAuthService authService;
 
-    @GetMapping("/login")
+    @GetMapping("/csrf")
     public ResponseEntity<ApiResponse> getCSRFToken(CsrfToken csrfToken) {
         csrfToken.getToken();
 

@@ -1,6 +1,5 @@
 package com.backend.backend.dto;
 
-import java.util.Set;
 import java.util.UUID;
 
 import lombok.Data;
@@ -13,5 +12,5 @@ public class UserDTO {
 
     private String department;
 
-    private Set<String> role;
+    private String role;
 }

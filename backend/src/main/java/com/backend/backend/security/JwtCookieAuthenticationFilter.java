@@ -48,7 +48,7 @@ class JwtCookieAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (JwtException | IllegalArgumentException | UsernameNotFoundException exception) {
-                // continue without authentication, protected routes will be rejected
+                // * continue without authentication, protected routes will be rejected
             }
         }
 
