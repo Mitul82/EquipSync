@@ -23,6 +23,7 @@ import com.backend.backend.responses.ApiResponse;
 import com.backend.backend.security.JwtService;
 import com.backend.backend.services.AuthService.IAuthService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -41,7 +42,7 @@ public class AuthControllers {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> userLogin(@RequestBody LoginRequest req) {
+    public ResponseEntity<ApiResponse> userLogin(@Valid @RequestBody LoginRequest req) {
         try {
             UserDTO user = authService.login(req.email(), req.password());
 
@@ -67,7 +68,7 @@ public class AuthControllers {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> userSignup(@RequestBody SignupRequest req) {
+    public ResponseEntity<ApiResponse> userSignup(@Valid @RequestBody SignupRequest req) {
         try {
             UserDTO user = authService.signup(req.email(), req.password(), req.department());
 
