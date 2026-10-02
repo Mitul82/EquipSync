@@ -1,12 +1,14 @@
 # spring.application.name=spring-security
 
 spring:
+    config:
+        import: optional:file:.env[.properties]
     application:
         name: EquipSync-API
     datasource:
-        url: jdbc:postgresql://localhost:5432/postgres
-        username: postgres
-        password: postgres
+        url: ${DB_URI}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
@@ -20,8 +22,10 @@ spring:
 
 auth:
     token:
-        jwtSecret: 3578908347695627
-        expirationInMils: 3600000
+        jwtSecret: ${JWT_SECRET}
+        expirationInMils: ${JWT_EXPIRATION_MS}
+    url:
+        frontend_url: ${FRONTEND_URL}
 
 server:
     port: 3000
