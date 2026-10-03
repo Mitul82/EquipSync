@@ -3,8 +3,8 @@ package com.backend.backend.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import com.backend.backend.enums.EAssetStatus;
 
@@ -51,8 +51,8 @@ public class AssetModel {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="assigned_to")
     private UserModel assignedTo;
-
-    @CreatedDate
+    
+    @CreationTimestamp
     @Column(updatable=false)
     private LocalDateTime createdAt;
 

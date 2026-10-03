@@ -47,7 +47,7 @@ public class AssetControllers {
 
     @GetMapping("/get-all")
     // Note: Use hasAuthority instead of hasRole to prevent Spring's automatic "ROLE_" prefixing
-    @PreAuthorize("hasAuthority('Admin', 'Manager')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
     public ResponseEntity<ApiResponse> getAllAssets() {
         List<AssetDTO> assets = assetService.getAllAssets();
 
