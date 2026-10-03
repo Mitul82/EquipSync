@@ -9,7 +9,7 @@ import com.backend.backend.enums.ERoles;
 public interface IUserService {
     List<UserDTO> getAllUsers();
     
-    UserDTO getCurrentUser(UUID userId);
+    UserDTO getCurrentUser();
 
     UserDTO assignRoleToUser(UUID userId, ERoles roleEnum);
 }

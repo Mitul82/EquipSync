@@ -26,7 +26,6 @@ import com.backend.backend.services.AuthService.IAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/auth")
@@ -63,6 +62,8 @@ public class AuthControllers {
 
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new ApiResponse("Login successfull", user));
         } catch (BadCredentialsException e) {
+            e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
         }
     }
@@ -89,6 +90,8 @@ public class AuthControllers {
             
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new ApiResponse("Sigenup successfull", user));
         } catch (IllegalStateException e) {
+            e.printStackTrace();
+            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }

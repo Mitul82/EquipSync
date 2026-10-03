@@ -50,7 +50,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO getCurrentUser(UUID userId) {
+    public UserDTO getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         UserModel user = repo.findByEmailIgnoreCase(email).orElseThrow(() -> new ResourceNotFound("Current user not found in database"));
