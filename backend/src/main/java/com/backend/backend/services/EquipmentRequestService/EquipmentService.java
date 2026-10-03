@@ -50,9 +50,14 @@ public class EquipmentService implements IEquipmentRequestService {
     @Override
     @Transactional
     public EquipmentRequestDTO denyRequest(UUID requestId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserModel user = userRepo.findByEmailIgnoreCase(email).orElseThrow(() -> new ResourceNotFound("Could not find logged in user"));
+
         EquipmentRequestModel request = repo.findById(requestId).orElseThrow(() -> new ResourceNotFound("Equipment request " + requestId + " not found"));
 
         request.setStatus(ERequestStatus.Denied);
+        request.setReviewedBy(user);
 
         EquipmentRequestModel updatedRequest = repo.save(request);
 
@@ -61,7 +66,7 @@ public class EquipmentService implements IEquipmentRequestService {
 
     @Override
     public List<EquipmentRequestDTO> getAllPendingRequests() {
-        List<EquipmentRequestModel> req = repo.findAll();
+        List<EquipmentRequestModel> req = repo.findAllByStatus(ERequestStatus.Pending);
 
         return req.stream().map(request -> mapper.map(request, EquipmentRequestDTO.class)).collect(Collectors.toList());
     }
