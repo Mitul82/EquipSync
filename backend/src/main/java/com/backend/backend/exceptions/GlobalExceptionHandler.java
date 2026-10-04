@@ -2,6 +2,7 @@ package com.backend.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
         String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(errorMessage, null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse> handleAccessDenied(RuntimeException ex) {
+        ex.printStackTrace();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse("You do not have permission to perform this action", null));
     }
 
     @ExceptionHandler(Exception.class)

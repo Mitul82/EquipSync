@@ -76,6 +76,24 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- Testing libraries -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security-test</artifactId>
+		    <version>4.2.0-M2</version>
+		    <scope>test</scope>
+		</dependency>
+
 		<!-- model mapper -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
