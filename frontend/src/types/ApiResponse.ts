@@ -1,6 +1,6 @@
-interface ApiRes {
+interface ApiRes<T> {
     message: string,
-    [key: string] : any
+    data?: T | null
 }
 
 export type { ApiRes }

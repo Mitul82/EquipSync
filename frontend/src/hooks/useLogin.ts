@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import api from '@/utils/api.ts';
 
+import type { AxiosError } from 'axios';
 import type { ApiRes } from '@/types/ApiResponse.ts';
 
 type Credentials = {
@@ -11,19 +12,26 @@ type Credentials = {
     password: string
 }
 
+type AuthUser = {
+    id: string,
+    email: string,
+    department: string,
+    role: 'Admin' | 'Manager' | 'Employee'
+}
+
 function useLogin() {
     const navigate = useNavigate();
 
     return useMutation({
         mutationFn: async (credentials: Credentials) => {
-            const { data }: { data: ApiRes } = await api.post('/auth/login', credentials);
+            const { data }: { data: ApiRes<AuthUser> } = await api.post('/auth/login', credentials);
 
             return data;
         },
         onMutate: () => {
             toast.loading('Logging in...', { id: 'login-toast' });
         },
-        onSuccess: (data: ApiRes) => {
+        onSuccess: (data: ApiRes<AuthUser>) => {
             toast.success(data.message || 'Logged in', { id:  'login-toast' });
 
             const searchParams = new URLSearchParams(window.location.search);
@@ -31,17 +39,17 @@ function useLogin() {
 
             if (redirectUrl) {
             	navigate(decodeURIComponent(redirectUrl));
-            } else if (data.user?.role === 'Admin') {
+            } else if (data?.data?.role === 'Admin') {
             	navigate('/admin');
-            } else if (data.user?.role === 'Manager') {
+            } else if (data?.data?.role === 'Manager') {
               	navigate('/manager');
-            } else if (data.user?.role === 'Employee') {
+            } else if (data?.data?.role === 'Employee') {
             	navigate('/dashboard');
             } else {
             	navigate('/');
             }
         },
-        onError: (err: any) => {
+        onError: (err: AxiosError<{ message?: string }>) => {
             const errMessage = err.response?.data?.message || 'An Error Occured';
             
             toast.error(errMessage, { id: 'login-toast' });
