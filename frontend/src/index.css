@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@plugin '@tailwindcss/typography';
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+:root {
+	--background: #ffffff;
+	--primary: #AF000F;
+	--primary-bg: #af000f2c;
+	--secondary: #000000;
+	--secondary-foreground: #464444;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-primary: var(--primary);
+	--color-primary-bg: var(--primary-bg);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #ffffff;
+		--primary: #AF000F;
+		--secondary: #000000;
+		--secondary-foreground: #464444;
+		--primary-bg: #af000f2c;
+	}
+}
+
+@keyframes marquee {
+	0% {
+	  transform: translateX(0%);
+	}
+	
+	100% {
+	  transform: translateX(-50%);
+	}
+}
+  
+.animate-marquee {
+	display: flex;
+	width: max-content;
+	animation: marquee 25s linear infinite;
+}
+  
+.animate-marquee:hover {
+	animation-play-state: paused;
+}
+
+body {
+	background: var(--background);
+	color: var(--primary);
+	font-family: Arial, Helvetica, sans-serif;
+}
