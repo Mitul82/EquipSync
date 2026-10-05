@@ -1,49 +1,52 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import { Eye, EyeOff, Lock, Mail, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, User } from 'lucide-react';
 
 import api from '@/utils/api';
-import useLogin from '@/hooks/useLogin';
+import useSignup from '@/hooks/useSignup';
 import logo from '@/assets/equipsync.svg';
 
-interface LoginForm {
+interface SignupForm {
     email: string,
     password: string,
+    department: string
 }
 
-const formState: LoginForm = {
+const formState: SignupForm = {
     email: '',
-    password: ''
+    password: '',
+    department: ''
 }
 
-function LoginPage() {
-	const [formData, setFormData] = React.useState<LoginForm>(formState);
+function SignupPage() {
+    const [formData, setFormData] = React.useState<SignupForm>(formState);
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-    const { mutate: Login, isPending } = useLogin();
+    const { mutate: Signup, isPending } = useSignup();
 
-	React.useEffect(() => {
-		// * using this useEffect() to initialize the CSRF token and the CSRF session for the current user
-		const getCSRF = async () => {
-			await api.get('/auth/csrf');
-		}
+    React.useEffect(() => {
+        // * using this useEffecct() just incase the user visits the signup page directly instead of first visiting the login page
+        // * it will help to initialise the current users CSRF token
+        const getCSRF = async () => {
+            await api.get('/auth/csrf');
+        }
 
-		getCSRF();
-	}, []);
+        getCSRF();
+    }, []);
 
-	const handleLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
-		e.preventDefault();
+    const handleSingup = async (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-		Login(formData);
-	}
+        Signup(formData);
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const name = e.target.name as keyof LoginForm;
+        const name = e.target.name as keyof SignupForm;
         const value = e.target.value;
         setFormData((f) => ({ ...f, [name]: value }));
     }
 
-	return (
+    return (
 		<main className='min-h-screen bg-background flex flex-col justify-between'>
 			<header className='relative z-20 w-full border-b border-neutral-200 bg-background/95 backdrop-blur-md py-4 px-6 sm:px-12 flex items-center justify-between'>
 				<div className='flex items-center gap-3'>
@@ -58,7 +61,7 @@ function LoginPage() {
 
 					<div className='bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 shadow-sm'>
 
-						<form onSubmit={handleLogin} noValidate className='space-y-5'>
+						<form onSubmit={handleSingup} noValidate className='space-y-5'>
 							<div>
 								<label htmlFor='email' className='block text-xs font-bold uppercase tracking-wider text-secondary mb-2'>
 									User Email
@@ -68,6 +71,18 @@ function LoginPage() {
 										<Mail className='w-4 h-4' />
 									</div>
 									<input id='email' name='email' type='email' autoComplete='email' value={formData.email} onChange={handleChange} placeholder='JhonDoe@gmail.com' className='w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition-all'/>
+								</div>
+							</div>
+
+							<div>
+								<label htmlFor='email' className='block text-xs font-bold uppercase tracking-wider text-secondary mb-2'>
+									User Department
+								</label>
+								<div className='relative'>
+									<div className='absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400'>
+										<User className='w-4 h-4' />
+									</div>
+									<input id='department' name='department' type='text' value={formData.department} onChange={handleChange} placeholder='Management' className='w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition-all'/>
 								</div>
 							</div>
 
@@ -101,9 +116,9 @@ function LoginPage() {
 
 						<div className='mt-8 pt-6 border-t border-secondary-foreground text-center'>
 							<p className='text-xs text-neutral-500 font-medium'>
-								Haven't Signed up yet?{' '}
-								<Link to='/signup' className='text-primary font-bold uppercase tracking-wider hover:underline ml-1'>
-									Signup Here
+								Already signed up?{' '}
+								<Link to='/' className='text-primary font-bold uppercase tracking-wider hover:underline ml-1'>
+									Login Here
 								</Link>
 							</p>
 						</div>
@@ -114,4 +129,4 @@ function LoginPage() {
 	);
 }
 
-export default LoginPage;
+export default SignupPage

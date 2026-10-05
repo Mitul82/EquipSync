@@ -4,10 +4,12 @@ import { Toaster } from 'react-hot-toast';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 import LoginPage from '@/pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 const router = createBrowserRouter(createRoutesFromElements(
 	<>
 		<Route path='/' element={<LoginPage/>}/>
+		<Route path='/signup' element={ <SignupPage/> }/>
 	</>
 ));
 
