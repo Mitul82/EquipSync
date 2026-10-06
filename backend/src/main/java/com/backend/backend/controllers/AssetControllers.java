@@ -61,6 +61,14 @@ public class AssetControllers {
         return ResponseEntity.ok().body(new ApiResponse("Retreived all available assests", assets));
     }
 
+    @GetMapping("/get-assigned")
+    public ResponseEntity<ApiResponse> getAssignedAsset() {
+        AssetDTO asset = assetService.getUserAsset();
+
+        return ResponseEntity.ok().body(new ApiResponse("Retreived assigned user asset", asset));
+    }
+    
+
     @PostMapping("/create")
     // Note: Use hasAnyAuthority instead of hasAnyRole to prevent Spring's automatic "ROLE_" prefixing
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")

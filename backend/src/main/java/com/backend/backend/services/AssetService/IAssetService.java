@@ -10,6 +10,8 @@ import com.backend.backend.requests.CreateAssetRequest;
 public interface IAssetService {
     AssetDTO createAsset(CreateAssetRequest req);
 
+    AssetDTO getUserAsset();
+
     List<AssetDTO> getAllAssets();
 
     List<AssetDTO> getAvailableAssets();
