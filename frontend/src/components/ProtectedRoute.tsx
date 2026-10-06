@@ -13,7 +13,14 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     const { data: user, isLoading, isError } = useAuth();
 
     if(isLoading) {
-        return <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75'/>
+        return (
+            <div className='flex min-h-[60vh] items-center justify-center'>
+                <span className='relative flex h-4 w-4'>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75' />
+                    <span className='relative inline-flex h-4 w-4 rounded-full bg-primary' />
+                </span>
+            </div>
+        );
     }
 
     if(isError || !user) {

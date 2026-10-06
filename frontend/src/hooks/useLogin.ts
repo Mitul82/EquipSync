@@ -5,18 +5,11 @@ import { useMutation } from '@tanstack/react-query';
 import api from '@/utils/api.ts';
 
 import type { AxiosError } from 'axios';
-import type { ApiRes } from '@/types/ApiResponse.ts';
+import type { ApiRes, AuthUser } from '@/types';
 
 type Credentials = {
     email: string,
     password: string
-}
-
-type AuthUser = {
-    id: string,
-    email: string,
-    department: string,
-    role: 'Admin' | 'Manager' | 'Employee'
 }
 
 function useLogin() {

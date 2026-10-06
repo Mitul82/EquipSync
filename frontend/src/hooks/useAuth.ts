@@ -2,14 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import api from '@/utils/api';
 
-import type { ApiRes } from "@/types/ApiResponse";
-
-type AuthUser = {
-    id: string,
-    email: string,
-    department: string,
-    role: 'Admin' | 'Manager' | 'Employee'
-}
+import type { ApiRes, AuthUser } from '@/types';
 
 function useAuth() {
     return useQuery({
