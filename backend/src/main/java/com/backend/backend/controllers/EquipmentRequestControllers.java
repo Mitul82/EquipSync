@@ -1,6 +1,7 @@
 package com.backend.backend.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,12 @@ public class EquipmentRequestControllers {
         return ResponseEntity.ok().body(new ApiResponse("Retreived all user requests", requests));
     }
 
+    // * using Map<String, String> because the frontend sends a JSON object and we need to be able to extract that object, this is
+    // * an alternate way to creating a separate Record object class to type the incoming request body
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createEquipmentRequest(@RequestBody String description) {
+    public ResponseEntity<ApiResponse> createEquipmentRequest(@RequestBody Map<String, String> payload) {
+        String description = payload.get("description");
+        
         EquipmentRequestDTO requestDTO = equipmentRequestService.createRequest(description);
 
         return ResponseEntity.ok().body(new ApiResponse("Created new request successfully", requestDTO));
