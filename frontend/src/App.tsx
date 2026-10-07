@@ -3,11 +3,14 @@ import '@/index.css';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
 
-import EmployeeLayout from '@/components/EmployeeComponents/layout';
+import ProtectedRoute from '@/components/ProtectedRoute';
+
+import Layout from '@/components/layout';
 
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
 import AssetsPage from '@/pages/common/AssetsPage';
+import RequestsPage from '@/pages/common/RequestsPage';
 import MyRequestsPage from '@/pages/common/MyRequestsPage';
 import DashboardPage from '@/pages/EmployeePages/DashboardPage';
 import CreateRequestPage from '@/pages/common/RaiseRequestPage';
@@ -17,16 +20,19 @@ const router = createBrowserRouter(createRoutesFromElements(
 	<>
 		<Route path='/' element={<LoginPage/>}/>
 		<Route path='/signup' element={ <SignupPage/> }/>
-		<Route path='/dashboard' element={ <EmployeeLayout/> }>	// TODO: add the protected route element for Dashboard route
+		<Route path='/dashboard' element={ <ProtectedRoute allowedRoles={['Employee', 'Admin', 'Manager']}><Layout/></ProtectedRoute> }>	// TODO: add the protected route element for Dashboard route
 			<Route index element={ <DashboardPage/> }/>
 			<Route path='assets' element={ <Outlet/> }>
-				<Route index element={ <AssetsPage/> }/>
+				<Route index element={ <ProtectedRoute allowedRoles={['Admin']}><AssetsPage/></ProtectedRoute> }/>
 				<Route path='available' element={ <AvailableAssetsPage/> }/>
 			</Route>
 			<Route path='requests' element={ <Outlet/> }>
 				<Route index element={ <MyRequestsPage/> }/>
 				<Route path='create' element={ <CreateRequestPage/> }/>
 			</Route>
+		</Route>
+		<Route path='/manage' element={ <ProtectedRoute allowedRoles={['Admin', 'Manager']}><Layout/></ProtectedRoute> }>	// TODO: add the protected route element for management route
+			<Route path='requests' element={ <RequestsPage/> }/>
 		</Route>
 	</>
 ));

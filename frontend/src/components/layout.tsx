@@ -4,13 +4,14 @@ import { Outlet } from 'react-router-dom';
 
 import Sidebar from './sidebar';
 import logo from '@/assets/equipsync.svg';
+import { navSections } from './navConfig';
 
 function EmployeeLayout() {
     const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
     return (
         <div className='min-h-screen bg-background'>
-            <Sidebar isMobileOpen={isMobileOpen} setIsMobileOpen={setIsMobileOpen}/>
+            <Sidebar sections={navSections} isMobileOpen={isMobileOpen} setIsMobileOpen={setIsMobileOpen}/>
 
             <div className='lg:pl-64'>
                 <header className='sticky top-0 z-20 flex items-center gap-3 border-b border-neutral-200 bg-background/95 px-4 py-3 backdrop-blur-md lg:hidden'>

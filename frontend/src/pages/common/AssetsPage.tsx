@@ -1,6 +1,6 @@
 import { ClipboardList } from 'lucide-react';
 
-import StatusBadge from '@/components/common/StatusBadge';
+import StatusBadge from '@/components/StatusBadge';
 import useGetAllAssets from '@/hooks/getAllAssets';
 
 function AssetsPage() {
@@ -67,8 +67,8 @@ function AssetsPage() {
                                                 <StatusBadge status={a.status} />
                                             </td>
                                             <td className='max-w-xs px-5 py-4'>
-                                                <p className='line-clamp-2 text-sm font-medium text-primary' title={a.assignedTo.email}>
-                                                    {a.assignedTo?.email || 'Not yet assigned'}
+                                                <p className='line-clamp-2 text-sm font-medium text-primary' title={a?.assignedTo?.email}>
+                                                    {a?.assignedTo?.email || 'Not yet assigned'}
                                                 </p>
                                             </td>
                                         </tr>

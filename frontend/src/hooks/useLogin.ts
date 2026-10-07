@@ -32,11 +32,7 @@ function useLogin() {
 
             if (redirectUrl) {
             	navigate(decodeURIComponent(redirectUrl));
-            } else if (data?.data?.role === 'Admin') {
-            	navigate('/admin');
-            } else if (data?.data?.role === 'Manager') {
-              	navigate('/manager');
-            } else if (data?.data?.role === 'Employee') {
+            } else if (data?.data?.id) {
             	navigate('/dashboard');
             } else {
             	navigate('/');

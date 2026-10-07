@@ -2,7 +2,7 @@ import { Monitor, Calendar, Hash, PackageOpen, ClipboardList } from 'lucide-reac
 
 import useGetUserAsset from '@/hooks/getUserAsset';
 import useGetUserRequests from '@/hooks/getUserRequests';
-import StatusBadge from '@/components/common/StatusBadge';
+import StatusBadge from '@/components/StatusBadge';
 
 const formatDate = (iso: string) => {
     return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });

@@ -1,6 +1,6 @@
 import { ClipboardList } from 'lucide-react';
 
-import StatusBadge from '@/components/common/StatusBadge';
+import StatusBadge from '@/components/StatusBadge';
 import useGetAllAvailableAssets from '@/hooks/getAllAvailableAssets';
 
 const formatDate = (iso: string) => {

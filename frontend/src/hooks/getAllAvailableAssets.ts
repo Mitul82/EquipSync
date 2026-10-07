@@ -6,7 +6,7 @@ import type { ApiRes, Assets } from '@/types';
 
 function useGetAllAvailableAssets() {
     return useQuery({
-        queryKey: ['getAllAssets'],
+        queryKey: ['getAllAvailableAssets'],
         queryFn: async () => {
             const { data }: { data: ApiRes<Assets> } = await api.get('/asset/get-available');
 
