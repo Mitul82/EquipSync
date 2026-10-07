@@ -67,7 +67,6 @@ public class AssetControllers {
 
         return ResponseEntity.ok().body(new ApiResponse("Retreived assigned user asset", asset));
     }
-    
 
     @PostMapping("/create")
     // Note: Use hasAnyAuthority instead of hasAnyRole to prevent Spring's automatic "ROLE_" prefixing

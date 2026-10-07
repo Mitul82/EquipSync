@@ -9,12 +9,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.backend.backend.dto.AssetDTO;
 import com.backend.backend.enums.EAssetStatus;
@@ -29,11 +33,13 @@ import com.backend.backend.exceptions.ResourceNotFound;
 import com.backend.backend.models.AssetModel;
 import com.backend.backend.models.UserModel;
 import com.backend.backend.repository.AssetRepository;
+import com.backend.backend.repository.UserRepository;
 import com.backend.backend.requests.CreateAssetRequest;
 
 @ExtendWith(MockitoExtension.class)
 public class AssetServiceTest {
     @Mock private AssetRepository repo;
+    @Mock private UserRepository userRepo;
     @Mock private ModelMapper mapper;
 
     @InjectMocks
@@ -42,6 +48,8 @@ public class AssetServiceTest {
     private AssetDTO mockAssetDTO;
     private AssetModel mockSavedAsset;
     private CreateAssetRequest request;
+
+    private final String TEST_EMAIL = "employee@company.com";
 
     @BeforeEach
     void setup() {
@@ -57,6 +65,13 @@ public class AssetServiceTest {
         mockAssetDTO = new AssetDTO();
         mockAssetDTO.setId(mockSavedAsset.getId());
         mockAssetDTO.setName(mockSavedAsset.getName());
+
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(TEST_EMAIL, null, List.of()));
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -174,5 +189,43 @@ public class AssetServiceTest {
     
         assertNull(mockSavedAsset.getAssignedTo(), "Assigned user should be cleared when Retired");
         assertEquals(EAssetStatus.Retired, mockSavedAsset.getStatus());
+    }
+
+    @Test
+    public void getUserAsset_WhenUserHasAssignedAsset_ReturnsMappedDTO() {
+        UserModel user = new UserModel();
+
+        when(userRepo.findByEmailIgnoreCase(TEST_EMAIL)).thenReturn(Optional.of(user));
+        when(repo.findByAssignedTo(user)).thenReturn(Optional.of(mockSavedAsset));
+        when(mapper.map(mockSavedAsset, AssetDTO.class)).thenReturn(mockAssetDTO);
+
+        AssetDTO result = assetService.getUserAsset();
+
+        assertNotNull(result);
+        assertEquals(mockAssetDTO.getId(), result.getId());
+
+        verify(repo, times(1)).findByAssignedTo(user);
+    }
+
+    @Test
+    public void getUserAsset_WhenUserNotFound_ThrowsResourceNotFound() {
+        when(userRepo.findByEmailIgnoreCase(TEST_EMAIL)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFound.class, () -> assetService.getUserAsset());
+
+        verify(repo, never()).findByAssignedTo(any());
+        verifyNoInteractions(mapper);
+    }
+
+    @Test
+    public void getUserAsset_WhenNoAssetAssigned_ThrowsResourceNotFound() {
+        UserModel user = new UserModel();
+
+        when(userRepo.findByEmailIgnoreCase(TEST_EMAIL)).thenReturn(Optional.of(user));
+        when(repo.findByAssignedTo(user)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFound.class, () -> assetService.getUserAsset());
+
+        verifyNoInteractions(mapper);
     }
 }

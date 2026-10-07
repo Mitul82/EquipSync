@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.backend.backend.dto.AssetDTO;
 import com.backend.backend.enums.EAssetStatus;
 import com.backend.backend.exceptions.GlobalExceptionHandler;
 import com.backend.backend.exceptions.ResourceNotFound;
@@ -70,6 +72,7 @@ public class AssetControllersTest {
     @MockitoBean private RateLimitService rateLimitService;
     @MockitoBean private org.springframework.security.core.userdetails.UserDetailsService userDetailsService;
 
+    private AssetDTO mockAsset;
     private final UUID ASSET_ID = UUID.randomUUID();
 
     @BeforeEach
@@ -77,6 +80,10 @@ public class AssetControllersTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+
+        mockAsset = new AssetDTO();
+        mockAsset.setId(ASSET_ID);
+        mockAsset.setName("Dell XPS 15");
 
         when(rateLimitService.tryConsume(anyString())).thenReturn(true);
     }
@@ -151,5 +158,94 @@ public class AssetControllersTest {
         mockMvc.perform(get("/api/v1/asset/get-all"))
                .andExpect(status().isForbidden())
                .andExpect(jsonPath("$.message").value("You do not have permission to perform this action"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "Employee")
+    public void getAssignedAsset_AsEmployee_Returns200AndAsset() throws Exception {
+        when(assetService.getUserAsset()).thenReturn(mockAsset);
+    
+        mockMvc.perform(get("/api/v1/asset/get-assigned"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.message").value("Retreived assigned user asset"))
+               .andExpect(jsonPath("$.data.name").value("Dell XPS 15"));
+    }
+    
+    @Test
+    @WithMockUser(authorities = "Employee")
+    public void getAssignedAsset_WhenNoAssetAssigned_Returns404() throws Exception {
+        when(assetService.getUserAsset())
+            .thenThrow(new ResourceNotFound("Could not find any assigned assets"));
+    
+        mockMvc.perform(get("/api/v1/asset/get-assigned"))
+               .andExpect(status().isNotFound())
+               .andExpect(jsonPath("$.message").value("Could not find any assigned assets"));
+    }
+    
+    @Test
+    public void getAssignedAsset_Unauthenticated_Returns403() throws Exception {
+        mockMvc.perform(get("/api/v1/asset/get-assigned"))
+               .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    public void getAllAssets_AsAdmin_Returns200AndData() throws Exception {
+        when(assetService.getAllAssets()).thenReturn(List.of(mockAsset));
+    
+        mockMvc.perform(get("/api/v1/asset/get-all"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.message").value("Retreived all assets"))
+               .andExpect(jsonPath("$.data[0].name").value("Dell XPS 15"));
+    }
+    
+    @Test
+    @WithMockUser(authorities = "Employee")
+    public void getAvailableAssets_AsEmployee_Returns200() throws Exception {
+        when(assetService.getAvailableAssets()).thenReturn(List.of(mockAsset));
+    
+        mockMvc.perform(get("/api/v1/asset/get-available"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.message").value("Retreived all available assests"))
+               .andExpect(jsonPath("$.data[0].name").value("Dell XPS 15"));
+    }
+    
+    @Test
+    @WithMockUser(authorities = "Manager")
+    public void createAsset_AsManagerWithValidPayload_Returns200() throws Exception {
+        CreateAssetRequest request = new CreateAssetRequest("Dell XPS 15", "SN-123", EAssetStatus.Available);
+        when(assetService.createAsset(any(CreateAssetRequest.class))).thenReturn(mockAsset);
+    
+        mockMvc.perform(post("/api/v1/asset/create")
+               .with(csrf())
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(objectMapper.writeValueAsString(request)))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.message").value("Asset created succesfully"))
+               .andExpect(jsonPath("$.data.id").value(ASSET_ID.toString()));
+    }
+    
+    @Test
+    @WithMockUser(authorities = "Employee")
+    public void createAsset_AsEmployee_Returns403Forbidden() throws Exception {
+        CreateAssetRequest request = new CreateAssetRequest("Dell XPS 15", "SN-123", EAssetStatus.Available);
+    
+        mockMvc.perform(post("/api/v1/asset/create")
+               .with(csrf())
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(objectMapper.writeValueAsString(request)))
+               .andExpect(status().isForbidden());
+    }
+    
+    @Test
+    @WithMockUser(authorities = "Admin")
+    public void updateAsset_AsAdmin_Returns200() throws Exception {
+        when(assetService.updateAssetStatus(any(UUID.class), any(EAssetStatus.class))).thenReturn(mockAsset);
+    
+        mockMvc.perform(patch("/api/v1/asset/update/{assetId}", ASSET_ID)
+               .param("status", "Assigned")
+               .with(csrf()))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.message").value("Updated asset status"));
     }
 }
