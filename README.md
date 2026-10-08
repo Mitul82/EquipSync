@@ -328,9 +328,13 @@ EquipSync/
 │   ├── .gitignore
 │   ├── mvnw
 │   ├── mvnw.cmd
+│   ├── .dockerignore
+│   ├── Dockerfile
 │   └── pom.xml
 └── frontend/
     ├── .env.example
+    ├── .dockerignore
+    ├── Dockerfile
     ├── package.json
     ├── package-lock.json
     ├── public/
@@ -413,6 +417,7 @@ cp .env.example .env
 
 Configure the required environment variables:
 
+*Values below are placeholders. Copy .env.example and replace them with your own.*
 ```text
 DB_URI=jdbc:postgresql://localhost:5432/postgres
 DB_USERNAME=postgres
@@ -460,6 +465,7 @@ cp .env.example .env
 
 Configure the backend URL:
 
+*Values below are placeholders. Copy .env.example and replace them with your own.*
 ```text
 VITE_BACKEND_URL=http://localhost:3000
 ```
@@ -482,7 +488,7 @@ The frontend will be available at the URL provided by Vite.
 
 # Running with Docker Compose
 
-**EquipSync** can be deployed as a multi-container application using Docker Compose.
+**EquipSync** can be run as a multi-container application using Docker Compose.
 
 The overall setup consists of:
 
@@ -515,8 +521,9 @@ Create the environment file:
 cp .env.example .env
 ```
 
-Configure the file:
+Configure the environment file:
 
+*Values below are placeholders. Copy .env.example and replace them with your own.*
 ```text
 DB_URI=jdbc:postgresql://localhost:5432/postgres
 DB_USERNAME=postgres
@@ -572,7 +579,7 @@ Potential future improvements include:
 
 GitHub: [@Mitul82](https://github.com/Mitul82)
 
-If you find Brick-IMS useful or interesting, consider giving the repository a ⭐.
+If you find EquipSync useful or interesting, consider giving the repository a ⭐.
 
 **Repository:**
 https://github.com/Mitul82/EquipSync
