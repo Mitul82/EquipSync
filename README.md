@@ -575,4 +575,4 @@ GitHub: [@Mitul82](https://github.com/Mitul82)
 If you find Brick-IMS useful or interesting, consider giving the repository a ⭐.
 
 **Repository:**
-https://github.com/Mitul82/Brick-IMS
+https://github.com/Mitul82/EquipSync
