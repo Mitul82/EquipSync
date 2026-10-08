@@ -9,6 +9,7 @@ import Layout from '@/components/layout';
 
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 import AssetsPage from '@/pages/common/AssetsPage';
 import UsersPage from '@/pages/AdminPages/UsersPage';
 import RequestsPage from '@/pages/common/RequestsPage';
@@ -41,6 +42,8 @@ const router = createBrowserRouter(createRoutesFromElements(
 			<Route path='assets' element={ <ManageAssetsPage/> }/>
 			<Route path='users' element={ <UsersPage/> }/>
 		</Route>
+
+		<Route path='*' element={ <NotFoundPage/> }/>
 	</>
 ));
 
