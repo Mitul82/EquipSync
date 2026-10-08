@@ -16,18 +16,13 @@ interface ReviewRequestModalProps {
     onDeny: () => void;
 }
 
-const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
 function ReviewRequestModal({ request, isSubmitting, onClose, onApprove, onDeny }: ReviewRequestModalProps) {
     const [assetId, setAssetId] = React.useState<string>('');
     const { data: availableAssets, isPending: loadingAssets } = useGetAllAvailableAssets();
 
     const assets = availableAssets?.data || [];
-
-    React.useEffect(() => {
-        setAssetId('');
-    }, [request?.id]);
 
     React.useEffect(() => {
         if (!request) return;

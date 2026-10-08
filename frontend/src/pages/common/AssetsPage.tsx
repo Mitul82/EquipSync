@@ -1,9 +1,13 @@
-import { ClipboardList } from 'lucide-react';
+import React from 'react';
+import { ClipboardList, Plus } from 'lucide-react';
 
 import StatusBadge from '@/components/StatusBadge';
 import useGetAllAssets from '@/hooks/getAllAssets';
+import CreateAssetModal from '@/components/CreateAssetModal';
 
 function AssetsPage() {
+    const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
+
     const { data: assets, isPending } = useGetAllAssets();
 
     if(isPending) {
@@ -24,9 +28,15 @@ function AssetsPage() {
     return (
         <div className='mx-auto my-10 max-w-6xl space-y-8 relative z-10'>
             <section>
-                <div className='mb-3 flex items-center justify-between'>
-                    <h2 className='text-xs font-bold uppercase tracking-wider text-primary'>My Requests</h2>
-                    <span className='text-xs font-medium text-primary'>{assetList.length} total</span>
+                <div className='flex items-center justify-between mb-5'>
+                    <div className='flex items-center gap-3'>
+                        <h1 className='text-xs font-bold uppercase tracking-wider text-neutral-400'>All Assets</h1>
+                        <span className='text-xs font-medium text-neutral-400'>{assetList.length} total</span>
+                    </div>
+                    <button type='button' onClick={() => setIsCreateOpen(true)} className='inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-bold uppercase tracking-widest text-background shadow-md transition-all hover:bg-primary/90 hover:shadow-lg'>
+                        <Plus className='h-4 w-4' />
+                        Add Asset
+                    </button>
                 </div>
 
                 <div className='overflow-hidden rounded-3xl border border-primary bg-background shadow-sm'>
@@ -79,6 +89,8 @@ function AssetsPage() {
                     )}
                 </div>
             </section>
+
+            {isCreateOpen && <CreateAssetModal onClose={() => setIsCreateOpen(false)} />}
         </div>
     );
 }

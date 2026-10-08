@@ -40,6 +40,16 @@ const matches = (pathname: string, href: string) => pathname === href || pathnam
     * Same behavior as the `end` prop on react-router's <NavLink>.
 */
 
+/* 
+    ? const navItems = [
+    ?     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, end: true },
+    ?     { label: 'All Assets', href: '/dashboard/assets', icon: Monitor, end: true },
+    ?     { label: 'Available Assets', href: '/dashboard/assets/available', icon: CheckCircle },
+    ?     { label: 'My Requests', href: '/dashboard/requests', icon: ClipboardList, end: true },
+    ?     { label: 'Raise Request', href: '/dashboard/requests/create', icon: GitPullRequestCreateArrow, end: true }
+    ? ]
+*/
+
 /*
     * HOW ACTIVE LINK STATUS WORKS (longest-match approach)
 

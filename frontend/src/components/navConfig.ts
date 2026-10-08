@@ -31,10 +31,8 @@ export const navSections: NavSection[] = [
         title: 'Manage',
         items: [
             { label: 'Review Requests', href: '/manage/requests', icon: ClipboardCheck, roles: ['Admin', 'Manager'] },
-            { label: 'Create Assets', href: '/manage/assets/create', icon: Boxes, roles: ['Admin', 'Manager'] },
             { label: 'Manage Assets', href: '/manage/assets', icon: Boxes, roles: ['Admin', 'Manager'] },
-            { label: 'Users', href: '/manage/users', icon: Users, roles: ['Admin'] },
-            { label: 'Manage Users', href: '/manage/users/status', icon: Users, roles: ['Admin'] }
+            { label: 'Users', href: '/manage/users', icon: Users, roles: ['Admin'] }
         ],
     },
 ];

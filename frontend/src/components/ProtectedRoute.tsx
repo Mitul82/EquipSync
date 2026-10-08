@@ -1,10 +1,10 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import useAuth from '@/hooks/useAuth';
 
 interface ProtectedRouteProps {
-    children: React.ReactNode,
+    children?: React.ReactNode,
     allowedRoles?: Array<'Admin' | 'Employee' | 'Manager'>
 }
 
@@ -33,11 +33,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
 
         if (redirectUrl) {
             return <Navigate to={decodeURIComponent(redirectUrl)}/>;
-        } else if (user?.role === 'Admin') {
-            return <Navigate to='/admin' replace={true}/>;
-        } else if (user?.role === 'Manager') {
-            return <Navigate to='/manager' replace={true}/>;
-        } else if (user?.role === 'Employee') {
+        } else if (user?.id) {
             return <Navigate to='/dashboard' replace={true}/>;
         } else {
             return <Navigate to='/'/>;
@@ -46,7 +42,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
 
     return (
         <>
-            { children }
+            { children ?? <Outlet/> }
         </>
     );
 }

@@ -29,7 +29,7 @@ function AvailableAssetsPage() {
         <div className='mx-auto my-10 max-w-6xl space-y-8 relative z-10'>
             <section>
                 <div className='mb-3 flex items-center justify-between'>
-                    <h2 className='text-xs font-bold uppercase tracking-wider text-primary'>My Requests</h2>
+                    <h2 className='text-xs font-bold uppercase tracking-wider text-primary'>Available Assets</h2>
                     <span className='text-xs font-medium text-primary'>{availableAssets.length} total</span>
                 </div>
 

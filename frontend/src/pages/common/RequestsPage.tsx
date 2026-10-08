@@ -102,7 +102,7 @@ function RequestsPage() {
                 )}
             </div>
 
-            <ReviewRequestModal request={selected} isSubmitting={isReviewing} onClose={() => setSelected(null)} onApprove={handleApprove} onDeny={handleDeny}/>
+            <ReviewRequestModal key={selected?.id ?? 'closed'} request={selected} isSubmitting={isReviewing} onClose={() => setSelected(null)} onApprove={handleApprove} onDeny={handleDeny}/>
         </div>
     );
 }
