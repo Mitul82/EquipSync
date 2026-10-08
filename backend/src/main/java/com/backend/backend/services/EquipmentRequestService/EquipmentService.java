@@ -92,7 +92,7 @@ public class EquipmentService implements IEquipmentRequestService {
         if(status == ERequestStatus.Approved) {
             AssetModel assignedAsset = assetRepo.findById(assetId).orElseThrow(() -> new ResourceNotFound("Requested asset not found"));
 
-            if(assignedAsset.getStatus() == EAssetStatus.Assigned) {
+            if(assignedAsset.getStatus() == EAssetStatus.Assigned || assignedAsset.getStatus() == EAssetStatus.In_repair || assignedAsset.getStatus() == EAssetStatus.Retired) {
                 throw new IllegalStateException("Asset is not available for assignment. Current status: " + assignedAsset.getStatus());
             }
 
