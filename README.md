@@ -66,7 +66,7 @@ Both the frontend and backend enforce role-based access to prevent unauthorized 
 
 # Tech Stack
 
-## Frotend
+## Frontend
 
 * React.js
 * Tailwind CSS
@@ -301,7 +301,7 @@ During authentication, the submitted password is compared against the stored BCr
 
 ```text
 EquipSync/
-├── Backend/
+├── backend/
 │   ├── .mvn/
 │   │   └── wrapper/
 │   ├── src/
@@ -329,7 +329,7 @@ EquipSync/
 │   ├── mvnw
 │   ├── mvnw.cmd
 │   └── pom.xml
-└── Frontend/
+└── frontend/
     ├── .env.example
     ├── package.json
     ├── package-lock.json
@@ -411,7 +411,7 @@ Create a **.env** file using the provided **.env.example**:
 cp .env.example .env
 ```
 
-Configure the required environment vairables:
+Configure the required environment variables:
 
 ```text
 DB_URI=jdbc:postgresql://localhost:5432/postgres
