@@ -10,4 +10,6 @@ import com.backend.backend.models.RoleModel;
 
 public interface RolesRepository extends JpaRepository<RoleModel, UUID> {
     Optional<RoleModel> findByRole(ERoles role);
+
+    boolean existsByRole(ERoles role);
 }
