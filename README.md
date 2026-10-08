@@ -329,7 +329,7 @@ EquipSync/
 │   ├── mvnw
 │   ├── mvnw.cmd
 │   └── pom.xml
-└── Frontned/
+└── Frontend/
     ├── .env.example
     ├── package.json
     ├── package-lock.json
@@ -531,6 +531,10 @@ VITE_BACKEND_URL=http://localhost:3000
 
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=12345
+POSTGRES_DB=postgres
+
+PGADMIN_DEFAULT_EMAIL=admin@admin.com
+PGADMIN_DEFAULT_PASSWORD=admin123
 ```
 
 Start the complete application using:
