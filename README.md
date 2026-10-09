@@ -423,7 +423,7 @@ cd backend
 Create a **.env** file using the provided **.env.example**:
 
 ```bash
-cp src/.env.example src/.env
+cp src/.env.example .env
 ```
 
 Configure the required environment variables:
@@ -456,7 +456,7 @@ mvnw.cmd spring-boot:run
 ./mvnw spring-boot:run
 ```
 
-The Spring Boot application will start on the port set by `server.port` in `backend/src/main/resources/application.yaml`. Make sure `VITE_BACKEND_URL` in the frontend `.env` uses the same port.
+The Spring Boot application starts on port 3000 (`server.port` in `backend/src/main/resources/application.yaml`). If you change it, update `VITE_BACKEND_URL` in the frontend `.env` to match.
 
 ### Run the tests
 
@@ -587,6 +587,7 @@ docker-compose down
 
 * Approving two requests for the same asset at the exact same moment is not protected by row-level locking yet (planned: pessimistic locking on the asset row).
 * No live deployment; the application is run locally or via Docker Compose.
+* Development defaults are used (`ddl-auto: update`, SQL and Spring Security debug logging); production would use migrations (e.g. Flyway) and quieter logging.
 
 ---
 
