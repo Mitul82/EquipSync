@@ -58,7 +58,7 @@ public class UserServiceTest {
         mockUser = new UserModel();
         mockUser.setId(USER_ID);
         mockUser.setEmail(TEST_EMAIL);
-        mockUser.setRoles(mockRole);
+        mockUser.setRole(mockRole);
 
         mockUserDTO = new UserDTO();
         mockUserDTO.setId(mockUser.getId());
@@ -76,7 +76,7 @@ public class UserServiceTest {
 
         assertNotNull(result);
         assertEquals("Manager", result.getRole());
-        assertEquals(mockRole, mockUser.getRoles());
+        assertEquals(mockRole, mockUser.getRole());
 
         verify(repo, times(1)).save(mockUser);
     }

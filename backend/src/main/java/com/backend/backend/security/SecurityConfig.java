@@ -18,6 +18,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.backend.backend.dto.UserDTO;
+import com.backend.backend.models.UserModel;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -60,6 +63,12 @@ public class SecurityConfig {
 
     @Bean
     public ModelMapper mapper() {
-        return new ModelMapper();
+        ModelMapper mapper = new ModelMapper();
+
+        mapper.typeMap(UserModel.class, UserDTO.class).addMappings(m -> 
+            m.map(src -> src.getRole().getRole(), UserDTO::setRole)
+        );
+
+        return mapper;
     }
 }

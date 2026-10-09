@@ -32,7 +32,7 @@ public class AuthService implements IAuthService {
 
         UserDTO dto = mapper.map(user, UserDTO.class);
 
-        dto.setRole(user.getRoles().getRole().name());
+        dto.setRole(user.getRole().getRole().name());
 
         return dto;
     }
@@ -45,13 +45,13 @@ public class AuthService implements IAuthService {
         user.setEmail(email);
         user.setPassword(encoder.encode(password));
         user.setDepartment(department);
-        user.setRoles(employeeRole);
+        user.setRole(employeeRole);
 
         UserModel savedUser = repo.save(user);
 
         UserDTO dto = mapper.map(savedUser, UserDTO.class);
 
-        dto.setRole(user.getRoles().getRole().name());
+        dto.setRole(user.getRole().getRole().name());
 
         return dto;
     }

@@ -59,7 +59,7 @@ public class AuthServiceTest {
         mockUser.setEmail(TEST_EMAIL);
         mockUser.setPassword(HASHED_PASSWORD);
         mockUser.setDepartment("Engineering");
-        mockUser.setRoles(mockRole);
+        mockUser.setRole(mockRole);
 
         mockUserDTO = new UserDTO();
         mockUserDTO.setId(mockUser.getId());

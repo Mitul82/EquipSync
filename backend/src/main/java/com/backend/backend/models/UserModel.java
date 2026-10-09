@@ -50,5 +50,5 @@ public class UserModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="role_id")
-    private RoleModel roles;
+    private RoleModel role;
 }

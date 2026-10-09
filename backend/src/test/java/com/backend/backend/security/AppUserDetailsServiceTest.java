@@ -43,7 +43,7 @@ public class AppUserDetailsServiceTest {
         mockUser.setId(UUID.randomUUID());
         mockUser.setEmail(TEST_EMAIL);
         mockUser.setPassword(TEST_PASSWORD);
-        mockUser.setRoles(mockRole);
+        mockUser.setRole(mockRole);
     }
 
     @Test

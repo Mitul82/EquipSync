@@ -33,13 +33,13 @@ public class UserService implements IUserService {
 
         RoleModel role = roleRepo.findByRole(roleEnum).orElseThrow(() -> new ResourceNotFound("Role " + roleEnum + " is not assignable"));
 
-        user.setRoles(role);
+        user.setRole(role);
 
         UserModel updateUser = repo.save(user);
 
         UserDTO dto = mapper.map(updateUser, UserDTO.class);
 
-        dto.setRole(updateUser.getRoles().getRole().name());
+        dto.setRole(updateUser.getRole().getRole().name());
 
         return dto;
     }
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
 
         UserDTO dto = mapper.map(user, UserDTO.class);
 
-        dto.setRole(user.getRoles().getRole().name());
+        dto.setRole(user.getRole().getRole().name());
 
         return dto;
     }
