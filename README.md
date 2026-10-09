@@ -25,7 +25,7 @@ The entire application can also be run as a **multi-container application using 
 
 ## Role-Based Workflows
 
-EquipSync Currently supports three primary roles:
+EquipSync currently supports three primary roles:
 
 | Role     | Purpose                                                      |
 |----------|--------------------------------------------------------------|
@@ -46,8 +46,9 @@ Both the frontend and backend enforce role-based access to prevent unauthorized 
 
 ## Frontend
 
-* React-based user interface
+* React-based user interface built with TypeScript
 * Tailwind CSS styling
+* Axios for API communication, with interceptors handling CSRF headers
 * TanStack Query for server-state management
 * Protected and role-specific routes
 * API integration with the Spring Boot backend
@@ -60,6 +61,8 @@ Both the frontend and backend enforce role-based access to prevent unauthorized 
 * Layered architecture
 * DTO-based request/response handling
 * Centralized exception handling
+* Per-IP rate limiting (Bucket4j token bucket with a Caffeine cache)
+* Unit tests
 * Security and authorization layer
 
 ---
@@ -69,8 +72,10 @@ Both the frontend and backend enforce role-based access to prevent unauthorized 
 ## Frontend
 
 * React.js
+* TypeScript
 * Tailwind CSS
 * TanStack Query
+* Axios
 
 ## Backend
 
@@ -301,6 +306,10 @@ During authentication, the submitted password is compared against the stored BCr
 
 ```text
 EquipSync/
+├── .gitignore
+├── .dockerignore
+├── docker-compose.yaml
+├── .env.example
 ├── backend/
 │   ├── .mvn/
 │   │   └── wrapper/
@@ -323,6 +332,8 @@ EquipSync/
 │   │   │   │               ├── services/
 │   │   │   │               └── BackendApplication.java
 │   │   │   └── resources/
+│   │   │          ├── application.yaml
+│   │   │          └── banner.txt
 │   │   └── .env.example
 │   ├── .gitattributes
 │   ├── .gitignore
@@ -412,7 +423,7 @@ cd backend
 Create a **.env** file using the provided **.env.example**:
 
 ```bash
-cp .env.example .env
+cp src/.env.example src/.env
 ```
 
 Configure the required environment variables:
@@ -439,19 +450,33 @@ Using the Maven wrapper:
 mvnw.cmd spring-boot:run
 ```
 
-### Linux
+#### Linux
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-The Spring Boot application will start on the configured backend port.
+The Spring Boot application will start on the port set by `server.port` in `backend/src/main/resources/application.yaml`. Make sure `VITE_BACKEND_URL` in the frontend `.env` uses the same port.
+
+### Run the tests
+
+#### Windows
+
+```bash
+mvnw.cmd test
+```
+
+#### Linux
+
+```bash
+./mvnw test
+```
 
 ---
 
 ## 4. Frontend Configuration
 
-Open another terminal and navigate to the frontend:
+Open another terminal, go to the repository root, and navigate to the frontend:
 
 ```bash
 cd frontend
@@ -515,7 +540,7 @@ The overall setup consists of:
 └───────────────────────────────┘
 ```
 
-Create the environment file:
+From the repository root, create the environment file:
 
 ```bash
 cp .env.example .env
@@ -555,6 +580,13 @@ Stop the containers:
 ```bash
 docker-compose down
 ```
+
+---
+
+# Known Limitations
+
+* Approving two requests for the same asset at the exact same moment is not protected by row-level locking yet (planned: pessimistic locking on the asset row).
+* No live deployment; the application is run locally or via Docker Compose.
 
 ---
 
